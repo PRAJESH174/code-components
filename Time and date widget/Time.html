@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time and Date Widget</title>
+    <style>
+        body {
+            background: #222;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .widget {
+            display: flex;
+            align-items: center;
+            background: #2196f3;
+            border-radius: 12px;
+            box-shadow: 0 0 24px 6px #2196f3, 0 2px 8px rgba(0,0,0,0.4);
+            padding: 0;
+            min-width: 420px;
+        }
+        .time-box {
+            background: #111;
+            border-radius: 8px 0 0 8px;
+            padding: 18px 32px;
+            display: flex;
+            align-items: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .time-box .hour {
+            color: #f44336;
+        }
+        .time-box .minute {
+            color: #4caf50;
+        }
+        .time-box .second {
+            color: #1e88e5;
+        }
+        .time-box .colon {
+            color: #fff;
+            margin: 0 4px;
+        }
+        .date-box {
+            background: transparent;
+            border-radius: 0 8px 8px 0;
+            padding: 12px 24px;
+            color: #fff;
+            text-align: center;
+            min-width: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .date-box .day {
+            font-size: 1em;
+            margin-bottom: 2px;
+        }
+        .date-box .date {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+        .date-box .month {
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget">
+        <div class="time-box">
+            <span class="hour" id="hour">00</span>
+            <span class="colon">:</span>
+            <span class="minute" id="minute">00</span>
+            <span class="colon">:</span>
+            <span class="second" id="second">00</span>
+        </div>
+        <div class="date-box">
+            <div class="day" id="day">Sunday</div>
+            <div class="date" id="date">30</div>
+            <div class="month" id="month">July</div>
+        </div>
+    </div>
+    <script>
+        function updateWidget() {
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            document.getElementById('hour').textContent = now.getHours().toString().padStart(2, '0');
+            document.getElementById('minute').textContent = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('second').textContent = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('day').textContent = days[now.getDay()];
+            document.getElementById('date').textContent = now.getDate();
+            document.getElementById('month').textContent = months[now.getMonth()];
+        }
+
+        updateWidget();
+        setInterval(updateWidget, 1000);
+    </script>
+</body>

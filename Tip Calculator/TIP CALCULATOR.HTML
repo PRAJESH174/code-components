@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tip Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: #f5f6fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            width: 320px;
+        }
+        .calculator h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #4e73df;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #4e73df;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #375ab7;
+        }
+        .result {
+            margin-top: 1.5rem;
+            background: #f1f2f6;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Tip Calculator</h2>
+        <div class="input-group">
+            <label for="currency">Currency</label>
+            <select id="currency">
+                <option value="USD" selected>USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="INR">INR (₹)</option>
+                <option value="JPY">JPY (¥)</option>
+                <option value="AUD">AUD (A$)</option>
+                <option value="CAD">CAD (C$)</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="billAmount">Bill Amount</label>
+            <input type="number" id="billAmount" min="0" step="0.01" placeholder="Enter bill amount">
+        </div>
+        <div class="input-group">
+            <label for="tipPercent">Tip Percentage (%)</label>
+            <input type="number" id="tipPercent" min="0" step="1" placeholder="Enter tip %">
+        </div>
+        <div class="input-group">
+            <label for="numPeople">Number of People</label>
+            <input type="number" id="numPeople" min="1" step="1" placeholder="Enter number of people">
+        </div>
+        <button class="btn" onclick="calculateTip()">Calculate</button>
+        <div class="result" id="result"></div>
+    </div>
+       <script>
+        const currencySymbols = {
+            USD: "$",
+            EUR: "€",
+            GBP: "£",
+            INR: "₹",
+            JPY: "¥",
+            AUD: "A$",
+            CAD: "C$"
+        };
+
+        function calculateTip() {
+            const bill = parseFloat(document.getElementById('billAmount').value);
+            const tipPercent = parseFloat(document.getElementById('tipPercent').value);
+            const numPeople = parseInt(document.getElementById('numPeople').value);
+            const currency = document.getElementById('currency').value;
+            const symbol = currencySymbols[currency] || "";
+
+            if (isNaN(bill) || bill <= 0) {
+                document.getElementById('result').textContent = "Please enter a valid bill amount.";
+                return;
+            }
+            if (isNaN(tipPercent) || tipPercent < 0) {
+                document.getElementById('result').textContent = "Please enter a valid tip percentage.";
+                return;
+            }
+            if (isNaN(numPeople) || numPeople < 1) {
+                document.getElementById('result').textContent = "Please enter a valid number of people.";
+                return;
+            }
+
+            const tipAmount = bill * (tipPercent / 100);
+            const totalAmount = bill + tipAmount;
+            const perPerson = totalAmount / numPeople;
+
+            document.getElementById('result').innerHTML = `
+                <strong>Bill Amount:</strong> ${symbol}${bill.toFixed(2)}<br>
+                <strong>Tip Percentage:</strong> ${tipPercent}%<br>
+                <strong>Tip Amount:</strong> ${symbol}${tipAmount.toFixed(2)}<br>
+                <strong>Total Amount:</strong> ${symbol}${totalAmount.toFixed(2)}<br>
+                <strong>Number of People:</strong> ${numPeople}<br>
+                <strong>Each Person Pays:</strong> ${symbol}${perPerson.toFixed(2)}
+            `;
+        }
+    </script>
+</body> 
+
+   
