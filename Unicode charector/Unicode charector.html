@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Unicode Character</title>
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 340px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 24px;
+            color: #2d3a4b;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        input[type="text"] {
+            width: 60px;
+            padding: 10px;
+            font-size: 2em;
+            border: none;
+            border-bottom: 2px solid #ff6384;
+            outline: none;
+            text-align: center;
+            background: transparent;
+            margin-bottom: 8px;
+        }
+        .detect-btn {
+            background: #ff6384;
+            color: #fff;
+            border: none;
+            padding: 8px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+        }
+        .detect-btn:hover {
+            background: #e05574;
+        }
+        .result {
+            font-size: 1.1em;
+            color: #444;
+            margin-top: 10px;
+        }
+        .char-preview {
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Get Unicode Character</h2>
+        <div class="input-group">
+            <input type="text" id="charInput" maxlength="1" placeholder="$">
+        </div>
+        <button class="detect-btn" onclick="detectUnicode()">Detect</button>
+        <div class="char-preview" id="charPreview"></div>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        function detectUnicode() {
+            const input = document.getElementById('charInput').value;
+            const preview = document.getElementById('charPreview');
+            const result = document.getElementById('result');
+            preview.textContent = '';
+            result.textContent = '';
+
+            if (!input) {
+                result.textContent = 'Please enter a character.';
+                return;
+            }
+            const code = input.codePointAt(0);
+            preview.textContent = input;
+            result.textContent = `The Unicode value of "${input}" is ${code}`;
+        }           
+    </script>
+</body>     
+</html>
