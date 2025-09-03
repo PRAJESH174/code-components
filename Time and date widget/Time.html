@@ -44,6 +44,7 @@
     .time-box .minute { color: #4caf50; }
     .time-box .second { color: #1e88e5; }
     .time-box .colon { color: #fff; margin: 0 4px; }
+    .time-box .ampm { color: #fff; font-size: 0.6em; margin-left: 12px; vertical-align: middle; }
 
     .date-box {
       background: transparent;
@@ -79,8 +80,11 @@
       color: #fff;
       font-size: 1em;
       margin-bottom: 18px;
-      text-align: center;
+      text-align: center "+100+";
       max-width: 500px;
+      display: flex;
+      justify-content: center "+100+";
+      align-items: center "+100+";
     }
     .timezone-select {
       margin: 18px auto 10px auto;
@@ -145,15 +149,15 @@
       </p>
 
       <select id="timezone" class="timezone-select" aria-label="Select Country/Timezone">
-        <option value="Asia/Kolkata">India (IST)</option>
-        <option value="UTC">Universal Time (UTC)</option>
-        <option value="America/New_York">USA (EST)</option>
-        <option value="Europe/London">UK (GMT)</option>
-        <option value="Asia/Tokyo">Japan (JST)</option>
-        <option value="Australia/Sydney">Australia (AEST)</option>
-        <option value="Europe/Berlin">Germany (CET)</option>
-        <option value="Africa/Johannesburg">South Africa (SAST)</option>
-        <option value="America/Los_Angeles">USA (PST)</option>
+        <option value="UTC">Universal Time (UTC, +00:00)</option>
+        <option value="Europe/London">UK (GMT, +00:00)</option>
+        <option value="Europe/Berlin">Germany (CET, +01:00)</option>
+        <option value="Africa/Johannesburg">South Africa (SAST, +02:00)</option>
+        <option value="Asia/Kolkata">India (IST, +05:30)</option>
+        <option value="Asia/Tokyo">Japan (JST, +09:00)</option>
+        <option value="Australia/Sydney">Australia (AEST, +10:00)</option>
+        <option value="America/New_York">USA (EST, -05:00)</option>
+        <option value="America/Los_Angeles">USA (PST, -08:00)</option>
       </select>
 
       <main class="widget" aria-label="Time and Date Widget">
@@ -161,6 +165,7 @@
           <span class="hour" id="hour" aria-label="Hour">00</span><span class="colon">:</span>
           <span class="minute" id="minute" aria-label="Minute">00</span><span class="colon">:</span>
           <span class="second" id="second" aria-label="Second">00</span>
+          <span class="ampm" id="ampm" aria-label="AM/PM"></span>
         </section>
         <section class="date-box" aria-label="Current Date">
           <div class="day" id="day" aria-label="Day">Sunday</div>
@@ -181,7 +186,7 @@
   </div>
 
   <script>
-    // Time and Date Widget Logic
+    // Time and Date Widget Logic (24-hour + AM/PM)
     function updateWidget() {
       const timezone = document.getElementById('timezone').value;
       const now = new Date();
@@ -190,6 +195,7 @@
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
+        hour12: false, // 24-hour format for display
         weekday: 'long',
         day: '2-digit',
         month: 'long',
@@ -199,12 +205,24 @@
       const parts = formatter.formatToParts(now);
       let data = {};
       parts.forEach(part => { data[part.type] = part.value; });
+      // 24-hour format numbers
       document.getElementById('hour').textContent = data.hour.padStart(2, '0');
       document.getElementById('minute').textContent = data.minute.padStart(2, '0');
       document.getElementById('second').textContent = data.second.padStart(2, '0');
       document.getElementById('day').textContent = data.weekday;
       document.getElementById('date').textContent = data.day;
       document.getElementById('month').textContent = data.month;
+
+      // Calculate AM/PM for the selected time zone
+      // Get hour in selected timezone (need hour12: true for AM/PM part)
+      const ampmFormatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: timezone,
+        hour: '2-digit',
+        hour12: true
+      });
+      const ampmParts = ampmFormatter.formatToParts(now);
+      let ampm = ampmParts.find(p => p.type === 'dayPeriod');
+      document.getElementById('ampm').textContent = ampm ? ampm.value : '';
     }
 
     document.getElementById('timezone').addEventListener('change', updateWidget);
@@ -227,7 +245,7 @@
         monthSelect.options[monthSelect.options.length] = new Option(month, index);
       });
       const currentYear = new Date().getFullYear();
-      for (let y = currentYear - 10; y <= currentYear + 10; y++) {
+      for (let y = currentYear - 125; y <= currentYear + 100; y++) {
         yearSelect.options[yearSelect.options.length] = new Option(y, y);
       }
       monthSelect.value = new Date().getMonth();
