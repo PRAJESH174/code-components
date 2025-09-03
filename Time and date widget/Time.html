@@ -1,108 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Time and Date Widget</title>
-    <style>
-        body {
-            background: #222;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .widget {
-            display: flex;
-            align-items: center;
-            background: #2196f3;
-            border-radius: 12px;
-            box-shadow: 0 0 24px 6px #2196f3, 0 2px 8px rgba(0,0,0,0.4);
-            padding: 0;
-            min-width: 420px;
-        }
-        .time-box {
-            background: #111;
-            border-radius: 8px 0 0 8px;
-            padding: 18px 32px;
-            display: flex;
-            align-items: center;
-            font-size: 2.5em;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .time-box .hour {
-            color: #f44336;
-        }
-        .time-box .minute {
-            color: #4caf50;
-        }
-        .time-box .second {
-            color: #1e88e5;
-        }
-        .time-box .colon {
-            color: #fff;
-            margin: 0 4px;
-        }
-        .date-box {
-            background: transparent;
-            border-radius: 0 8px 8px 0;
-            padding: 12px 24px;
-            color: #fff;
-            text-align: center;
-            min-width: 90px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .date-box .day {
-            font-size: 1em;
-            margin-bottom: 2px;
-        }
-        .date-box .date {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-        .date-box .month {
-            font-size: 1em;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Time and Date Widget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #222;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .widget {
+      display: flex;
+      align-items: center;
+      background: #2196f3;
+      border-radius: 12px;
+      box-shadow: 0 0 24px 6px #2196f3, 0 2px 8px rgba(0,0,0,0.4);
+      padding: 0;
+      min-width: 320px;
+      max-width: 90vw;
+    }
+    .time-box {
+      background: #111;
+      border-radius: 8px 0 0 8px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .time-box .hour { color: #f44336; }
+    .time-box .minute { color: #4caf50; }
+    .time-box .second { color: #1e88e5; }
+    .time-box .colon { color: #fff; margin: 0 4px; }
+    .date-box {
+      background: transparent;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      color: #fff;
+      text-align: center;
+      min-width: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .date-box .day { font-size: 1em; margin-bottom: 2px; }
+    .date-box .date { font-size: 2em; font-weight: bold; margin-bottom: 2px; }
+    .date-box .month { font-size: 1em; }
+    @media (max-width: 500px) {
+      .widget {
+        flex-direction: column;
+        min-width: 0;
+        width: 95vw;
+        padding: 0;
+      }
+      .time-box, .date-box {
+        border-radius: 8px 8px 0 0;
+        padding: 12px 8px;
+        font-size: 1.3em;
+      }
+      .date-box { border-radius: 0 0 8px 8px; }
+    }
+    .info-para {
+      color: #fff;
+      font-size: 1em;
+      margin-bottom: 18px;
+      text-align: center;
+      max-width: 500px;
+    }
+    .info-time {
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      max-width: 600px;
+    }
+    .timezone-select {
+      margin: 18px auto 10px auto;
+      display: block;
+      font-size: 1em;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+    }
+    .highlighted-day {
+      background-color: #f44336;
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+    #calendar-table td {
+      cursor: pointer;
+      padding: 8px;
+    }
+    .calendar-container {
+      margin-left: 32px;
+    }
+  </style>
 </head>
 <body>
-    <div class="widget">
-        <div class="time-box">
-            <span class="hour" id="hour">00</span>
-            <span class="colon">:</span>
-            <span class="minute" id="minute">00</span>
-            <span class="colon">:</span>
-            <span class="second" id="second">00</span>
+  <div style="display: flex; align-items: flex-start; justify-content: center;">
+    <div>
+      <p class="info-para">
+        The date below updates automatically, reflecting the current day, date, and month. This widget ensures you always see the latest date and time without needing to refresh the page.
+      </p>
+      <select id="timezone" class="timezone-select" aria-label="Select Country/Timezone">
+        <option value="Asia/Kolkata">India (IST)</option>
+        <option value="UTC">Universal Time (UTC)</option>
+        <option value="America/New_York">USA (EST)</option>
+        <option value="Europe/London">UK (GMT)</option>
+        <option value="Asia/Tokyo">Japan (JST)</option>
+        <option value="Australia/Sydney">Australia (AEST)</option>
+        <option value="Europe/Berlin">Germany (CET)</option>
+        <option value="Africa/Johannesburg">South Africa (SAST)</option>
+        <option value="America/Los_Angeles">USA (PST)</option>
+      </select>
+      <section class="widget" aria-label="Time and Date Widget">
+        <div class="time-box" aria-label="Current Time">
+          <span class="hour" id="hour" aria-label="Hour">00</span><span class="colon">:</span>
+          <span class="minute" id="minute" aria-label="Minute">00</span><span class="colon">:</span>
+          <span class="second" id="second" aria-label="Second">00</span>
         </div>
-        <div class="date-box">
-            <div class="day" id="day">Sunday</div>
-            <div class="date" id="date">30</div>
-            <div class="month" id="month">July</div>
+        <div class="date-box" aria-label="Current Date">
+          <div class="day" id="day" aria-label="Day">Sunday</div>
+          <div class="date" id="date" aria-label="Date">30</div>
+          <div class="month" id="month" aria-label="Month">July</div>
         </div>
+      </section>
+      <p class="info-time">
+        THE UPDATED TIME BASED ON SELECTED TIME ZONE.<br>
+    <div class="calendar-container">
+      </p>
     </div>
-    <script>
-        function updateWidget() {
-            const now = new Date();
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            const months = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
+    <div style="margin-left: 32px;">
+      <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); padding: 18px; min-width: 320px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <select id="calendar-month" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3;"></select>
+          <select id="calendar-year" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; margin-left:8px;"></select>
+          <input type="number" id="calendar-date-input" placeholder="Select a date" style="margin-left:8px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; width:110px;">
+        </div>
+        <table id="calendar-table" style="width:100%; border-collapse:collapse; text-align:center;"></table>
+      </div>
+    </div>
+  </div>
 
-            document.getElementById('hour').textContent = now.getHours().toString().padStart(2, '0');
-            document.getElementById('minute').textContent = now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('second').textContent = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('day').textContent = days[now.getDay()];
-            document.getElementById('date').textContent = now.getDate();
-            document.getElementById('month').textContent = months[now.getMonth()];
+  <script>
+    // Time and Date Widget Logic
+    function updateWidget() {
+      const timezone = document.getElementById('timezone').value;
+      const now = new Date();
+      const options = { timeZone: timezone, hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+      const formatter = new Intl.DateTimeFormat('en-US', options);
+      const parts = formatter.formatToParts(now);
+      let data = {};
+      parts.forEach(part => { data[part.type] = part.value; });
+
+      document.getElementById('hour').textContent = (data.hour || "00").padStart(2, '0');
+      document.getElementById('minute').textContent = (data.minute || "00").padStart(2, '0');
+      document.getElementById('second').textContent = (data.second || "00").padStart(2, '0');
+      document.getElementById('day').textContent = data.weekday || "";
+      document.getElementById('date').textContent = data.day || "";
+      document.getElementById('month').textContent = data.month || "";
+    }
+
+    document.getElementById('timezone').addEventListener('change', updateWidget);
+    updateWidget();
+    setInterval(updateWidget, 1000);
+
+    // Calendar Widget Logic
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    function populateCalendarDropdowns() {
+      const monthSelect = document.getElementById('calendar-month');
+      const yearSelect = document.getElementById('calendar-year');
+      monthSelect.innerHTML = "";
+      yearSelect.innerHTML = "";
+      
+      monthNames.forEach((month, index) => {
+        monthSelect.options[monthSelect.options.length] = new Option(month, index);
+      });
+      const currentYear = new Date().getFullYear();
+      for (let y = currentYear - 125; y <= currentYear + 100; y++) {
+        yearSelect.options[yearSelect.options.length] = new Option(y, y);
+      }
+      monthSelect.value = new Date().getMonth();
+      yearSelect.value = currentYear;
+    }
+
+    function renderCalendar(month, year, highlightDay = 0) {
+      const table = document.getElementById('calendar-table');
+      table.innerHTML = '';
+      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let header = table.insertRow();
+      daysOfWeek.forEach(day => {
+        let cell = header.insertCell();
+        cell.textContent = day;
+        cell.style.cssText = "padding:6px; color:#2196f3;";
+      });
+      const firstDay = new Date(year, month).getDay();
+      const daysInMonth = 32 - new Date(year, month, 32).getDate();
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        let row = table.insertRow();
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < firstDay) {
+            row.insertCell();
+          } else if (date > daysInMonth) {
+            break;
+          } else {
+            let cell = row.insertCell();
+            cell.textContent = date;
+            if (date === highlightDay) {
+              cell.classList.add('highlighted-day');
+            }
+            date++;
+          }
         }
+      }
+    }
 
-        updateWidget();
-        setInterval(updateWidget, 1000);
-    </script>
+    function updateCalendar() {
+      const month = parseInt(document.getElementById('calendar-month').value);
+      const year = parseInt(document.getElementById('calendar-year').value);
+      const highlightDay = parseInt(document.getElementById('calendar-date-input').value) || 0;
+      renderCalendar(month, year, highlightDay);
+    }
+
+    document.getElementById('calendar-month').addEventListener('change', updateCalendar);
+    document.getElementById('calendar-year').addEventListener('change', updateCalendar);
+    document.getElementById('calendar-date-input').addEventListener('input', updateCalendar);
+
+    document.getElementById('calendar-table').addEventListener('click', function(e) {
+      if (e.target && e.target.nodeName === 'TD' && e.target.textContent) {
+        const day = parseInt(e.target.textContent);
+        document.getElementById('calendar-date-input').value = day;
+        updateCalendar();
+      }
+    });
+
+    populateCalendarDropdowns();
+    updateCalendar();
+  </script>
 </body>
+</html>
