@@ -99,16 +99,43 @@
       border-radius: 6px;
       border: none;
     }
-    .highlighted-day {
-      background-color: #f44336;
-      color: white;
-      border-radius: 50%;
-      font-weight: bold;
-    }
+  .highlighted-day {
+    background-color: #f44336;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+  #calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+  }
   #calendar-table td {
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
+  }
+  .calendar-year-select {
+    font-size: 1em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #2196f3;
+    margin-left: 8px;
+  }
+  .calendar-date-input {
+    margin-left: 8px;
+    font-size: 1em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #2196f3;
+    width: 110px;
+  }
+  .calendar-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    padding: 18px;
+    min-width: 320px;
   }
   </style>
 </head>
@@ -145,20 +172,20 @@
         </section>
       </main>
 
-      <p class="info-time">
-        THE UPDATED TIME BASED ON SELECTED TIME ZONE.<br>
-        You can view the current time and date for different countries and compare with Universal Time (UTC).
-      </p>
-    </div>
-
-    <div style="margin-left: 32px;">
-      <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); padding: 18px; min-width: 320px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div class="calendar-container">
+        <table id="calendar-table"></table>
           <select id="calendar-month" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3;"></select>
           <select id="calendar-year" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; margin-left:8px;"></select>
           <input type="number" id="calendar-date-input" placeholder="Select a date" style="margin-left:8px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; width:110px;">
         </div>
-        <table id="calendar-table" style="width:100%; border-collapse:collapse; text-align:center;"></table>
+        <table id="calendar-table"></table>
+      </div>
+        <table id="calendar-table"></table>
+          <select id="calendar-month" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3;"></select>
+          <select id="calendar-year" style="font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; margin-left:8px;"></select>
+          <input type="number" id="calendar-date-input" placeholder="Select a date" style="margin-left:8px; font-size:1em; padding:4px 8px; border-radius:6px; border:1px solid #2196f3; width:110px;">
+        </div>
+        <table id="calendar-table"></table>
       </div>
     </div>
   </div>
