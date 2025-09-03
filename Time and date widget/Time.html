@@ -131,6 +131,9 @@
       min-width: 320px;
       margin-top: 24px;
     }
+    .calendar-controls {
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
@@ -164,7 +167,7 @@
           <div class="date" id="date" aria-label="Date">30</div>
           <div class="month" id="month" aria-label="Month">September</div>
         </section>
-      </main>
+        <div class="calendar-controls">
 
       <div class="calendar-container">
         <div style="margin-bottom: 12px;">
@@ -172,7 +175,7 @@
           <select id="calendar-year" class="calendar-year-select" title="Select Year"></select>
           <input type="number" id="calendar-date-input" placeholder="Select a date" class="calendar-date-input" min="1" max="31">
         </div>
-        <table id="calendar-table"></table>
+         <table id="calendar-table"></table>
       </div>
     </div>
   </div>
