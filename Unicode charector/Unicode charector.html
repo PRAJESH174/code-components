@@ -64,17 +64,52 @@
             margin-bottom: 8px;
             color: #222;
         }
+        .unicode-table-container {
+            max-height: 260px;
+            overflow-y: auto;
+            margin-top: 18px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+        table.unicode-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1em;
+        }
+        table.unicode-table th, table.unicode-table td {
+            padding: 6px 4px;
+            border-bottom: 1px solid #eee;
+        }
+        table.unicode-table th {
+            background: #f4f6fb;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Get Unicode Character</h2>
         <div class="input-group">
-            <input type="text" id="charInput" maxlength="1" placeholder="$">
+            <input type="text" id="charInput" maxlength="2" placeholder="$">
         </div>
         <button class="detect-btn" onclick="detectUnicode()">Detect</button>
         <div class="char-preview" id="charPreview"></div>
         <div class="result" id="result"></div>
+        <div class="result" id="maxLengthInfo"></div>
+        <div class="unicode-table-container">
+            <table class="unicode-table" id="unicodeTable">
+                <thead>
+                    <tr>
+                        <th>Char</th>
+                        <th>Unicode Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Unicode characters will be inserted here -->
+                </tbody>
+            </table>
+        </div>
     </div>
     <script>
         function detectUnicode() {
@@ -91,7 +126,25 @@
             const code = input.codePointAt(0);
             preview.textContent = input;
             result.textContent = `The Unicode value of "${input}" is ${code}`;
-        }           
+        }
+
+        // Show max length info
+        document.getElementById('maxLengthInfo').textContent =
+            'Max input length: 2 (to support surrogate pairs)';
+
+        // Populate Unicode table (U+0020 to U+FFFF, limited for performance)
+        const tbody = document.getElementById('unicodeTable').querySelector('tbody');
+        // You can change end value to 0x10FFFF for all Unicode, but it may freeze browser
+        for (let i = 32; i <= 255; i++) {
+            const tr = document.createElement('tr');
+            const tdChar = document.createElement('td');
+            tdChar.textContent = String.fromCodePoint(i);
+            const tdValue = document.createElement('td');
+            tdValue.textContent = 'U+' + i.toString(16).toUpperCase().padStart(4, '0');
+            tr.appendChild(tdChar);
+            tr.appendChild(tdValue);
+            tbody.appendChild(tr);
+        }
     </script>
-</body>     
+</body>
 </html>
