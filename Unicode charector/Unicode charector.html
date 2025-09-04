@@ -1,191 +1,215 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Get Unicode Character</title>
-        <style>
-            body {
-                background: #f4f6fb;
-                font-family: 'Segoe UI', Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                max-width: 340px;
-                margin: 60px auto;
-                background: #fff;
-                border-radius: 12px;
-                box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-                padding: 32px 24px;
-                text-align: center;
-            }
-            h2 {
-                margin-bottom: 24px;
-                color: #2d3a4b;
-                font-size: 1.2em;
-                font-weight: 600;
-            }
-            .input-group {
-                margin-bottom: 18px;
-            }
-            input[type="text"] {
-                width: 60px;
-                padding: 10px;
-                font-size: 2em;
-                border: none;
-                border-bottom: 2px solid #ff6384;
-                outline: none;
-                text-align: center;
-                background: transparent;
-                margin-bottom: 8px;
-            }
-            .detect-btn {
-                background: #ff6384;
-                color: #fff;
-                border: none;
-                padding: 8px 28px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 1em;
-                margin-top: 10px;
-                margin-bottom: 16px;
-                transition: background 0.2s;
-            }
-            .detect-btn:hover {
-                background: #e05574;
-            }
-            .result {
-                font-size: 1.1em;
-                color: #444;
-                margin-top: 10px;
-            }
-            .char-preview {
-                font-size: 2em;
-                margin-bottom: 8px;
-                color: #222;
-            }
-            .unicode-table-container {
-                max-height: 260px;
-                overflow-y: auto;
-                margin-top: 18px;
-                border: 1px solid #eee;
-                border-radius: 8px;
-                background: #fafbfc;
-            }
-            table.unicode-table {
-                width: 100%;
-                border-collapse: collapse;
-                font-size: 1em;
-            }
-            table.unicode-table th, table.unicode-table td {
-                padding: 6px 4px;
-                border-bottom: 1px solid #eee;
-            }
-            table.unicode-table th {
-                background: #f4f6fb;
-                font-weight: 600;
-            }
-            .keyboard {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin: 16px 0;
-            }
-            .key-btn {
-                background: #e0e3ea;
-                border: none;
-                border-radius: 4px;
-                margin: 2px;
-                padding: 8px 12px;
-                font-size: 1.2em;
-                cursor: pointer;
-                transition: background 0.2s;
-            }
-            .key-btn:hover {
-                background: #ff6384;
-                color: #fff;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>Get Unicode Character</h2>
-            <div class="input-group">
-                <input type="text" id="charInput" maxlength="2" placeholder="$">
-            </div>
-            <div class="keyboard" id="keyboard"></div>
-            <button class="detect-btn" onclick="detectUnicode()">Detect</button>
-            <div class="char-preview" id="charPreview"></div>
-            <div class="result" id="result"></div>
-            <div class="result" id="maxLengthInfo"></div>
-            <div class="unicode-table-container">
-                <table class="unicode-table" id="unicodeTable">
-                    <thead>
-                        <tr>
-                            <th>Char</th>
-                            <th>Unicode Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Unicode characters will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Unicode Character</title>
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 80px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 64px 32px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 24px;
+            color: #2d3a4b;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 25px;
+            font-size: 2em;
+            border: none;
+            border-bottom: 2px solid #ff6384;
+            outline: none;
+            text-align: center;
+            background: transparent;
+            margin-bottom: 8px;
+        }
+        .detect-btn {
+            background: #ff6384;
+            color: #fff;
+            border: none;
+            padding: 8px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+        }
+        .detect-btn:hover {
+            background: #e05574;
+        }
+        .result {
+            font-size: 1.1em;
+            color: #444;
+            margin-top: 10px;
+        }
+        .char-preview {
+            font-size: 2em;
+            margin-bottom: 8px;
+            color: #222;
+        }
+        .unicode-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+        table.unicode-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1em;
+        }
+        table.unicode-table th, table.unicode-table td {
+            padding: 6px 4px;
+            border-bottom: 1px solid #eee;
+        }
+        table.unicode-table th {
+            background: #f4f6fb;
+            font-weight: 600;
+        }
+        .keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 16px 0;
+        }
+        .key-btn {
+            background: #e0e3ea;
+            border: none;
+            border-radius: 4px;
+            margin: 2px;
+            padding: 8px 12px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .key-btn:hover {
+            background: #ff6384;
+            color: #fff;
+        }
+        .typed-output {
+            font-size: 2em;
+            color: #2d3a4b;
+            margin: 12px 0;
+            min-height: 40px;
+            border-bottom: 1px dashed #ff6384;
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Get Unicode Character</h2>
+        <div class="input-group">
+            <input type="text" id="charInput" maxlength="8" placeholder="$">
         </div>
-        <script>
-            function detectUnicode() {
-                const input = document.getElementById('charInput').value;
-                const preview = document.getElementById('charPreview');
-                const result = document.getElementById('result');
-                preview.textContent = '';
-                result.textContent = '';
+        <div class="keyboard" id="keyboard"></div>
+        <div class="typed-output" id="typedOutput"></div>
+        <button class="detect-btn" onclick="detectUnicode()">Detect</button>
+        <div class="char-preview" id="charPreview"></div>
+        <div class="result" id="result"></div>
+        <div class="result" id="maxLengthInfo"></div>
+        <div class="unicode-table-container">
+            <table class="unicode-table" id="unicodeTable">
+                <thead>
+                    <tr>
+                        <th>Char</th>
+                        <th>Unicode Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Unicode characters will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function detectUnicode() {
+            const input = document.getElementById('charInput').value;
+            const preview = document.getElementById('charPreview');
+            const result = document.getElementById('result');
+            preview.textContent = '';
+            result.textContent = '';
 
-                if (!input) {
-                    result.textContent = 'Please enter a character.';
-                    return;
-                }
-                const code = input.codePointAt(0);
-                preview.textContent = input;
-                result.textContent = `The Unicode value of "${input}" is ${code}`;
+            if (!input) {
+                result.textContent = 'Please enter a character.';
+                return;
             }
+            const code = input.codePointAt(0);
+            preview.textContent = input;
+            result.textContent = `The Unicode value of "${input}" is ${code}`;
+        }
 
-            // Show max length info
-            document.getElementById('maxLengthInfo').textContent =
-                'Max input length: 2 (to support surrogate pairs)';
+        // Show max length info
+        document.getElementById('maxLengthInfo').textContent =
+            'Max input length: 8 (to support surrogate pairs)';
 
-            // Populate Unicode table (U+0020 to U+00FF, limited for performance)
-            const tbody = document.getElementById('unicodeTable').querySelector('tbody');
-            for (let i = 32; i <= 255; i++) {
-                const tr = document.createElement('tr');
-                const tdChar = document.createElement('td');
-                tdChar.textContent = String.fromCodePoint(i);
-                const tdValue = document.createElement('td');
-                tdValue.textContent = 'U+' + i.toString(16).toUpperCase().padStart(4, '0');
-                tr.appendChild(tdChar);
-                tr.appendChild(tdValue);
-                tbody.appendChild(tr);
-            }
+        // Populate Unicode table (U+0020 to U+00FF, limited for performance)
+        const tbody = document.getElementById('unicodeTable').querySelector('tbody');
+        for (let i = 32; i <= 255; i++) {
+            const tr = document.createElement('tr');
+            const tdChar = document.createElement('td');
+            tdChar.textContent = String.fromCodePoint(i);
+            const tdValue = document.createElement('td');
+            tdValue.textContent = 'U+' + i.toString(16).toUpperCase().padStart(4, '0');
+            tr.appendChild(tdChar);
+            tr.appendChild(tdValue);
+            tbody.appendChild(tr);
+        }
 
-            // Simple keyboard (A-Z, a-z, 0-9, symbols)
-            const keyboardChars = [
-                ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                ..."abcdefghijklmnopqrstuvwxyz",
-                ..."0123456789",
-                "!", "@", "#", "$", "%", "&", "*", "(", ")", "-", "+", "=", "/", "?", ".", ","
-            ];
-            const keyboardDiv = document.getElementById('keyboard');
-            keyboardChars.forEach(char => {
-                const btn = document.createElement('button');
-                btn.className = 'key-btn';
-                btn.textContent = char;
-                btn.onclick = function() {
-                    const input = document.getElementById('charInput');
-                    input.value = char;
-                    input.focus();
-                };
-                keyboardDiv.appendChild(btn);
-            });
-        </script>
-    </body>     
-    </html>
+        // Simple keyboard (A-Z, a-z, 0-9, symbols)
+        const keyboardChars = [
+            ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            ..."abcdefghijklmnopqrstuvwxyz",
+            ..."0123456789",
+            "!", "@", "#", "$", "%", "&", "*", "(", ")", "-", "+", "=", "/", "?", ".", ","
+        ];
+        const keyboardDiv = document.getElementById('keyboard');
+        const typedOutput = document.getElementById('typedOutput');
+        let typedText = "";
+
+        keyboardChars.forEach(char => {
+            const btn = document.createElement('button');
+            btn.className = 'key-btn';
+            btn.textContent = char;
+            btn.onclick = function() {
+                typedText += char;
+                typedOutput.textContent = typedText;
+                document.getElementById('charInput').value = char;
+                document.getElementById('charInput').focus();
+            };
+            keyboardDiv.appendChild(btn);
+        });
+
+        // Optional: Add a clear button for typed output
+        const clearBtn = document.createElement('button');
+        clearBtn.className = 'key-btn';
+        clearBtn.textContent = 'Clear';
+        clearBtn.style.background = '#ff6384';
+        clearBtn.style.color = '#fff';
+        clearBtn.onclick = function() {
+            typedText = "";
+            typedOutput.textContent = "";
+        };
+        keyboardDiv.appendChild(clearBtn);
+    </script>
+</body>     
+</html>
